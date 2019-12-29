@@ -1,1 +1,9 @@
+com\walker\gmall\bean\BaseCatalog3.class
+com\walker\gmall\bean\SpuSaleAttr.class
+com\walker\gmall\bean\BaseCatalog1.class
+com\walker\gmall\bean\SpuImage.class
+com\walker\gmall\bean\BaseCatalog2.class
 com\walker\gmall\bean\UserAddress.class
+com\walker\gmall\bean\BaseAttrInfo.class
+com\walker\gmall\bean\SpuSaleAttrValue.class
+com\walker\gmall\bean\BaseAttrValue.class
