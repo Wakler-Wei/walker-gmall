@@ -30,10 +30,10 @@ public class ManageServiceImpl implements ManageService {
     @Autowired
     private BaseAttrValueMapper baseAttrValueMapper;
 
-    @Resource
+    @Resource  //默认查找type
     private  SpuInfoMapper spuInfoMapper;
 
-    @Resource
+    @Resource  // 默认按照name，如果没有name 找type
     private  BaseSaleAttrMapper baseSaleAttrMapper;
 
     @Autowired
@@ -44,6 +44,18 @@ public class ManageServiceImpl implements ManageService {
 
     @Autowired
     private SpuSaleAttrValueMapper spuSaleAttrValueMapper;
+
+    @Resource
+    private SkuInfoMapper skuInfoMapper;
+
+    @Autowired
+    private SkuAttrValueMapper skuAttrValueMapper;
+
+    @Autowired
+    private  SkuSaleAttrValueMapper skuSaleAttrValueMapper;
+
+    @Autowired
+    private  SkuImageMapper skuImageMapper;
 
 
     @Override
@@ -65,8 +77,11 @@ public class ManageServiceImpl implements ManageService {
     }
 
     @Override
-    public List<BaseAttrInfo> attrInfoList(BaseAttrInfo baseAttrInfo) {
-        return baseAttrInfoMapper.select(baseAttrInfo);
+    public List<BaseAttrInfo> attrInfoList(String catalog3Id) {
+        /*Example example = new Example(BaseAttrInfo.class);
+        example.createCriteria().andEqualTo("catalog3Id",catalog3Id);
+        return baseAttrInfoMapper.selectByExample(example);*/
+        return baseAttrInfoMapper.getBaseAttrInfoListByCatalog3Id(catalog3Id);
     }
 
     @Override
@@ -165,20 +180,50 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public List<SpuSaleAttr> spuSaleAttrList(String spuId) {
-        SpuInfo spuInfo = new SpuInfo();
-        spuInfo.setId(spuId);
-        List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
-        return  spuSaleAttrList;
+        return spuSaleAttrMapper.selectSpuSaleAttrList(spuId);
 
     }
 
     @Override
     public List<SpuImage> spuImageList(String spuId) {
-        SpuInfo spuInfo = new SpuInfo();
-        spuInfo.setId(spuId);
-        List<SpuImage> spuImageList = spuInfo.getSpuImageList();
-        return spuImageList;
+        Example example = new Example(SpuImage.class);
+        example.createCriteria().andEqualTo("spuId",spuId);
+        List<SpuImage> spuImages = spuImageMapper.selectByExample(example);
+        return spuImages;
     }
 
+    @Override
+    @Transactional
+    public void saveSkuInfo(SkuInfo skuInfo) {
+
+        skuInfoMapper.insertSelective(skuInfo);
+
+        List<SkuImage> skuImageList = skuInfo.getSkuImageList();
+        if (skuImageList != null && skuImageList.size()>0) {
+            for (SkuImage skuImage : skuImageList) {
+                skuImage.setSkuId(skuInfo.getId());
+                skuImageMapper.insertSelective(skuImage);
+            }
+        }
+
+        List<SkuAttrValue> skuAttrValueList = skuInfo.getSkuAttrValueList();
+        if (skuAttrValueList != null && skuAttrValueList.size()>0) {
+            for (SkuAttrValue skuAttrValue : skuAttrValueList) {
+                skuAttrValue.setSkuId(skuInfo.getId());
+                skuAttrValueMapper.insertSelective(skuAttrValue);
+            }
+
+        }
+
+        List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
+        if (skuSaleAttrValueList != null && skuSaleAttrValueList.size()>0) {
+            for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
+                skuSaleAttrValue.setSkuId(skuInfo.getId());
+                skuSaleAttrValueMapper.insertSelective(skuSaleAttrValue);
+            }
+
+        }
+
+    }
 
 }

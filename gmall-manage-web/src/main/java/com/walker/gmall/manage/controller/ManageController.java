@@ -55,12 +55,12 @@ public class ManageController {
 
     /**
      * 商品属性
-     * @param baseAttrInfo
      * @return
      */
     @RequestMapping("attrInfoList")
-    public  List<BaseAttrInfo> attrInfoList(BaseAttrInfo baseAttrInfo){
-        return manageService.attrInfoList(baseAttrInfo);
+    public  List<BaseAttrInfo> attrInfoList(String catalog3Id){
+        //return manageService.attrInfoList(baseAttrInfo);
+        return manageService.attrInfoList(catalog3Id);
     }
 
     /**
