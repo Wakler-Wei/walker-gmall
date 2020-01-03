@@ -40,4 +40,10 @@ public interface ManageService {
 
     //保存SKU
     void saveSkuInfo(SkuInfo skuInfo);
+    //根据主键查询商品详情
+    SkuInfo getSkuInfo(String skuId);
+    //根据SKUINFO查询商品的销售属性与销售属性值
+    List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(SkuInfo skuInfo);
+    //查询 销售属性值与skuId 组合的数据集合
+    List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId);
 }
