@@ -1,8 +1,12 @@
 com\walker\gmall\bean\SkuImage.class
 com\walker\gmall\bean\BaseCatalog3.class
 com\walker\gmall\bean\SpuSaleAttr.class
+com\walker\gmall\bean\SkuLsAttrValue.class
 com\walker\gmall\bean\SkuInfo.class
+com\walker\gmall\bean\SkuLsInfo.class
+com\walker\gmall\bean\SkuLsParams.class
 com\walker\gmall\bean\BaseCatalog1.class
+com\walker\gmall\bean\SkuLsResult.class
 com\walker\gmall\bean\SpuImage.class
 com\walker\gmall\bean\BaseCatalog2.class
 com\walker\gmall\bean\SkuAttrValue.class

@@ -2,9 +2,12 @@ package com.walker.gmall.manage.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.walker.gmall.bean.SkuInfo;
+import com.walker.gmall.bean.SkuLsInfo;
 import com.walker.gmall.bean.SpuImage;
 import com.walker.gmall.bean.SpuSaleAttr;
+import com.walker.gmall.service.ListService;
 import com.walker.gmall.service.ManageService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +27,9 @@ public class SkuManageController {
     @Reference
     ManageService manageService;
 
+    @Reference
+    ListService listService;
+
     //spuSaleAttrList
     @RequestMapping("spuSaleAttrList")
     public List<SpuSaleAttr> spuSaleAttrList(String spuId){
@@ -40,5 +46,21 @@ public class SkuManageController {
     @RequestMapping("saveSkuInfo")
     public  void saveSkuInfo(@RequestBody SkuInfo skuInfo){
         manageService.saveSkuInfo(skuInfo);
+        //制作完sku之后上传到elasticsearch
+        onSale(skuInfo.getId());
+    }
+
+    // 如何上传？ 根据skuId 来上传
+    // 单个上传！
+    @RequestMapping("onSale")
+    public void onSale(String skuId){
+        // 商品上架{saveSkuLsInfo}
+        SkuLsInfo skuLsInfo = new SkuLsInfo();
+        // 给skuLsInfo 初始化赋值
+        // 根据skuId 查询skuInfo
+        SkuInfo skuInfo = manageService.getSkuInfo(skuId);
+        // 属性拷贝
+        BeanUtils.copyProperties(skuInfo,skuLsInfo);
+        listService.saveSkuLsInfo(skuLsInfo);
     }
 }

@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSON;
 import com.walker.gmall.bean.SkuInfo;
 import com.walker.gmall.bean.SkuSaleAttrValue;
 import com.walker.gmall.bean.SpuSaleAttr;
-import com.walker.gmall.bean.SpuSaleAttrValue;
 import com.walker.gmall.service.ManageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
