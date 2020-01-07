@@ -424,4 +424,14 @@ public class ManageServiceImpl implements ManageService {
         return skuSaleAttrValueMapper.selectSkuSaleAttrValueListBySpu(spuId);
     }
 
+    @Override
+    public List<BaseAttrInfo> attrInfoList(List<String> attrValueIdList) {
+
+        // 将集合变成字符串！
+        String attrValueIds = org.apache.commons.lang3.StringUtils.join(attrValueIdList.toArray(), ",");
+        System.err.println("平台属性值Id集合字符串" + attrValueIds);
+        return baseAttrInfoMapper.selectAttrInfoListByIds(attrValueIds);
+
+    }
+
 }

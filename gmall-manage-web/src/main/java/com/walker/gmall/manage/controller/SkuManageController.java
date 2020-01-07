@@ -46,8 +46,10 @@ public class SkuManageController {
     @RequestMapping("saveSkuInfo")
     public  void saveSkuInfo(@RequestBody SkuInfo skuInfo){
         manageService.saveSkuInfo(skuInfo);
+
         //制作完sku之后上传到elasticsearch
-        onSale(skuInfo.getId());
+//        String skuId = skuInfo.getId();
+//        onSale(skuId);
     }
 
     // 如何上传？ 根据skuId 来上传

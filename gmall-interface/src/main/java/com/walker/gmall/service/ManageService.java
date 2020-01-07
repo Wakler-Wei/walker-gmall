@@ -46,4 +46,8 @@ public interface ManageService {
     List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(SkuInfo skuInfo);
     //查询 销售属性值与skuId 组合的数据集合
     List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId);
+
+
+    //SkuLsResult中的attrValueIdList  集合查询平台属性
+    List<BaseAttrInfo> attrInfoList(List<String> attrValueIdList);
 }

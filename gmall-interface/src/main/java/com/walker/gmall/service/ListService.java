@@ -19,4 +19,10 @@ public interface ListService {
      * @return
      */
     SkuLsResult search(SkuLsParams skuLsParams);
+
+    /**
+     * 更新es的hotScore
+     * @param skuId
+     */
+    void incrHotScore(String skuId);
 }

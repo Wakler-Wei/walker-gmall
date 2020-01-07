@@ -5,11 +5,13 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.walker.gmall.bean.SkuLsInfo;
 import com.walker.gmall.bean.SkuLsParams;
 import com.walker.gmall.bean.SkuLsResult;
+import com.walker.gmall.config.RedisUtil;
 import com.walker.gmall.service.ListService;
 import io.searchbox.client.JestClient;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.Update;
 import io.searchbox.core.search.aggregation.TermsAggregation;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -21,6 +23,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +38,9 @@ public class ListServiceImpl implements ListService {
     public static final String ES_INDEX = "gmall";
 
     public static final String ES_TYPE = "SkuInfo";
+
+    @Autowired
+    RedisUtil redisUtil;
 
     @Override
     public void saveSkuLsInfo(SkuLsInfo skuLsInfo) {
@@ -74,6 +80,45 @@ public class ListServiceImpl implements ListService {
         SkuLsResult skuLsResult = makeResultForSearch(searchResult, skuLsParams);
         return skuLsResult;
     }
+
+    //更新热度评分
+    @Override
+    public void incrHotScore(String skuId){
+        Jedis jedis = redisUtil.getJedis();
+        int timesToEs=10;
+        Double hotScore = jedis.zincrby("hotScore", 1, "skuId:" + skuId);
+        if(hotScore%timesToEs==0){
+            updateHotScore(skuId,  Math.round(hotScore));
+        }
+
+    }
+
+    // 更新es
+    private void updateHotScore(String skuId, long hotScore) {
+        /*
+        1.  定义dsl 语句
+            POST gmall/SkuInfo/34/_update { }
+        2.  准备执行的动作
+        3.  执行
+         */
+        String upd="{\n" +
+                "  \"doc\": {\n" +
+                "      \"hotScore\": "+hotScore+"\n" +
+                "  }\n" +
+                "}";
+
+        // update
+        Update update = new Update.Builder(upd).index(ES_INDEX).type(ES_TYPE).id(skuId).build();
+
+        try {
+            jestClient.execute(update);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     // 返回结果集
     private SkuLsResult makeResultForSearch(SearchResult searchResult, SkuLsParams skuLsParams) {
