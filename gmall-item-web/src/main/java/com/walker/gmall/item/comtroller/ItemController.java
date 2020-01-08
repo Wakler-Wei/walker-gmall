@@ -3,6 +3,7 @@ package com.walker.gmall.item.comtroller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
+import com.walker.gmall.LoginRequire;
 import com.walker.gmall.bean.SkuInfo;
 import com.walker.gmall.bean.SkuSaleAttrValue;
 import com.walker.gmall.bean.SpuSaleAttr;
@@ -31,6 +32,7 @@ public class ItemController {
     private ListService listService;
 
     @RequestMapping("{skuId}.html")
+    @LoginRequire
     public String skuInfoPage(@PathVariable(value = "skuId") String skuId, Model model){
         //打印商品ID
         System.err.println(skuId);

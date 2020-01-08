@@ -25,4 +25,17 @@ public interface UserInfoService {
      */
     List<UserAddress> getUserAdressById(String userId);
 
+    /**
+     *根据用户信息查询是否有该用户
+     * @param userInfo
+     * @return
+     */
+    UserInfo login(UserInfo userInfo);
+
+    /**
+     * 根据用户ID查询用户
+     * @param userId
+     * @return
+     */
+    UserInfo verify(String userId);
 }

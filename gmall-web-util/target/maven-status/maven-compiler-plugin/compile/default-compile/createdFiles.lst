@@ -1,0 +1,3 @@
+com\walker\gmall\WebMvcConfiguration.class
+com\walker\gmall\AuthInterceptor.class
+com\walker\gmall\LoginRequire.class
