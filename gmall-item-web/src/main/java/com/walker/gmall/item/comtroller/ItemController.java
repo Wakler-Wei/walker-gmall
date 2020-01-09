@@ -32,7 +32,7 @@ public class ItemController {
     private ListService listService;
 
     @RequestMapping("{skuId}.html")
-    @LoginRequire
+    //@LoginRequire
     public String skuInfoPage(@PathVariable(value = "skuId") String skuId, Model model){
         //打印商品ID
         System.err.println(skuId);

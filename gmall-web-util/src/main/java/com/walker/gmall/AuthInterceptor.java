@@ -52,6 +52,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         //判断是否有这个注解
         if (methodAnnotation != null) {
             String salt = request.getHeader("X-forwarded-for");
+            // 远程调用！
             //http://passport.atguigu.com/verify?token=eyJhbGciOiJIUzI1NiJ9.eyJuaWNrTmFtZSI6IkFkbWluaXN0cmF0b3IiLCJ1c2VySWQiOiIyIn0.dzzeXEhiqnKFvURLBqhDQpMW6mtuHh5W95wkLpkwY0E&salt=192.168.111.1
             String result = HttpClientUtil.doGet(WebConst.VERIFY_ADDRESS + "?token=" + token + "&salt=" + salt);
             if ("success".equals(result)){
@@ -74,16 +75,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                     response.sendRedirect(WebConst.LOGIN_ADDRESS+"?originUrl="+encodeURL);
                     // 拦截！
                     return false;
-
                 }
             }
-
         }
-
-
         return true;
     }
-
 
     //解密token
     private Map getUserMapByToken(String token) {

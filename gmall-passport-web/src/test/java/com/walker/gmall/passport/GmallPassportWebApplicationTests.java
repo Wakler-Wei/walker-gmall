@@ -9,14 +9,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class GmallPassportWebApplicationTests {
 
-    @Test
-    public void contextLoads() {
-    }
+
 
     @Test
     public static void main(String[] args) {
@@ -40,7 +39,16 @@ public class GmallPassportWebApplicationTests {
         System.out.println(decode);
         System.out.println(decode2);
 
+        //消除-
+        //消除-
+        String uuid1 = UUID.randomUUID().toString();
+        System.err.println(uuid1);
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        System.out.println(uuid);
+
     }
+
+
 
 
 }
