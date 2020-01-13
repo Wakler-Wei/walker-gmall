@@ -12,7 +12,7 @@
     <select id="selectCartListWithCurPrice" resultMap="CartInfoMap">
 
         SELECT c.*,s.price FROM cart_info c
-        INNER JOIN sku_info s ON c.sku_id=s.id WHERE c.user_id=#{userId}
+        INNER JOIN sku_info s ON c.sku_id=s.id WHERE c.user_id=#{0}
         order by c.id desc
 
     </select>
